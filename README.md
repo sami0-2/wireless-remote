@@ -9,5 +9,3 @@ It will be operated by an arduino pro mini and constist of the nRF24L01 with the
 space.
 
 While the recive is gonna be operated by an arduion nano and will have a regular nRF24L01 module with the range around 100m in open space.
-
-# Just testing
