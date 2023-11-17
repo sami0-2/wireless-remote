@@ -17,6 +17,8 @@ DATA_PACKAGE data;
 
 void setup()
 {
+  Serial.begin(9600);
+  
   //Initializing the DATA_PACKAGE
   for(int i = 0; i < 6; i++)
   {
@@ -38,6 +40,13 @@ void loop()
   if(radio.available())
   {
     radio.read(&data, sizeof(DATA_PACKAGE));
+  }
+  for(int i = 0; i < 6; i++)
+  {
+    Serial.print(data.analogVal[i];
+    Serial.print("\n");
+    Serial.print(data.digitalVal[i];
+    Serial.print("\n");
   }
   
 }
