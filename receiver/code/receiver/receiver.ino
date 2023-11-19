@@ -43,10 +43,9 @@ void loop()
   }
   for(int i = 0; i < 6; i++)
   {
-    Serial.print(data.analogVal[i];
+    Serial.print(data.analogVal[i]);
     Serial.print("\n");
-    Serial.print(data.digitalVal[i];
+    Serial.print(data.digitalVal[i]);
     Serial.print("\n");
   }
-  
 }
