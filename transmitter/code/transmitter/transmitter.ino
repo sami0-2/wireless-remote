@@ -70,5 +70,4 @@ void loop()
   
   //Write the data to the receiver
   radio.write(&data, sizeof(DATA_PACKAGE));
-  delay(500);
 }
