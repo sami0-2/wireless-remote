@@ -64,7 +64,7 @@ void loop()
   for(int i = 0; i < 6; i++)
   {
     data.analogVal[i] = map(analogRead(ANALOGPINS[i]), 0, 1023, 0, 255);
-    data.digitalVal[i] = digitalRead(DIGITALPINS);
+    data.digitalVal[i] = digitalRead(DIGITALPINS[i]);
   }
   
   
