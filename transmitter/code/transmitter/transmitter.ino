@@ -17,28 +17,32 @@ const int DIGITALPINS[6] = {2, 3, 4, 5, 6, 10};
 //A4 and A5 are connect to two separete potentiometers
 const int ANALOGPINS[6] = {A0, A1, A2, A3, A4, A5};
 
+//Debounce function for the buttons for more information check bellow loop
+int debounce(int pin, int pinLocation);
 
-//Values of all the input pins
+
+//Stores the values from the inputs
 struct DATA_PACKAGE
 {
   int analogVal[6] = {};
   bool digitalVal[6] = {};
-};
-DATA_PACKAGE data;
+}; DATA_PACKAGE data;
 
-
-
+bool lastButtonState[6];
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay = 50;
 
 
 
 
 void setup()
 {
-  //Intializing the values to the default of 127 for analog and 1/true for digital
+  //Intializing the values to the default of 127 for analog and 0/LOW for digital
   for(int i = 0; i < 6; i++)
   {
     data.analogVal[i] = 127;
-    data.digitalVal[i] = true;
+    data.digitalVal[i] = LOW;
+    lastButtonState[i] = data.digitalVal[i];
   }
 
   
@@ -64,10 +68,31 @@ void loop()
   for(int i = 0; i < 6; i++)
   {
     data.analogVal[i] = map(analogRead(ANALOGPINS[i]), 0, 1023, 0, 255);
-    data.digitalVal[i] = digitalRead(DIGITALPINS[i]);
+    data.digitalVal[i] = debounce(DIGITALPINS[i], i);
   }
   
   
   //Write the data to the receiver
   radio.write(&data, sizeof(DATA_PACKAGE));
+}
+
+
+
+
+
+int debounce(int pin, int pinLocation)
+{
+  int reading = digitalRead(pin);
+  if(lastButtonState[pinLocation] != reading)
+  {
+    lastDebounceTime = millis();
+  }
+  if(millis() - lastDebounceTime > debounceDelay)
+  {
+    if(reading != lastButtonState[pinLocation])
+    {
+      lastButtonState[pinLocation] = reading;
+    }
+  }
+  return lastButtonState[pinLocation];
 }
