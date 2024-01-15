@@ -38,19 +38,19 @@ unsigned long debounceDelay = 50;
 void setup()
 {
   //Intializing the values to the default of 127 for analog and 0/LOW for digital
-  for(int i = 0; i < 6; i++)
+  for(int pin = 0; pin < 6; pin++)
   {
-    data.analogVal[i] = 127;
-    data.digitalVal[i] = LOW;
-    lastButtonState[i] = data.digitalVal[i];
+    data.analogVal[pin] = 127;
+    data.digitalVal[pin] = LOW;
+    lastButtonState[pin] = data.digitalVal[pin];
   }
 
   
   //Initializing all the digital pins as INPUT_PULL and the analogs to INPUT
-  for(int i = 0; i < 6; i++)
+  for(int pin = 0; pin < 6; pin++)
   {
-    pinMode(DIGITALPINS[i], INPUT_PULLUP);
-    pinMode(ANALOGPINS[i], INPUT);
+    pinMode(DIGITALPINS[pin], INPUT_PULLUP);
+    pinMode(ANALOGPINS[pin], INPUT);
   }
 
 
@@ -65,10 +65,10 @@ void setup()
 void loop()
 {
   //Reading the data from the sensors and mapping it to the apropriat value
-  for(int i = 0; i < 6; i++)
+  for(int pin = 0; pin < 6; pin++)
   {
-    data.analogVal[i] = map(analogRead(ANALOGPINS[i]), 0, 1023, 0, 255);
-    data.digitalVal[i] = debounce(DIGITALPINS[i], i);
+    data.analogVal[pin] = map(analogRead(ANALOGPINS[pin]), 0, 1023, 0, 255);
+    data.digitalVal[pin] = debounce(pin);
   }
   
   
@@ -80,19 +80,19 @@ void loop()
 
 
 
-int debounce(int pin, int pinLocation)
+int debounce(int pin)
 {
-  int reading = digitalRead(pin);
-  if(lastButtonState[pinLocation] != reading)
+  int reading = digitalRead(DIGITALPINS[pin]);
+  if(lastButtonState[pin] != reading)
   {
     lastDebounceTime = millis();
   }
   if(millis() - lastDebounceTime > debounceDelay)
   {
-    if(reading != lastButtonState[pinLocation])
+    if(reading != lastButtonState[pin])
     {
-      lastButtonState[pinLocation] = reading;
+      lastButtonState[pin] = reading;
     }
   }
-  return lastButtonState[pinLocation];
+  return lastButtonState[pin];
 }
